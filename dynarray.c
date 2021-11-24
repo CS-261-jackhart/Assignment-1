@@ -17,15 +17,24 @@ struct dynarray* dynarray_create() {
 }
 
 void dynarray_free(struct dynarray* da) {
+  assert(da != NULL);
   free(da->data);
   free(da);
 }
 
-int dynarray_size(struct dynarray* da) { return da->size; }
+int dynarray_size(struct dynarray* da) { 
+  assert(da != NULL);
+  return da->size; 
+}
 
-int dynarray_capacity(struct dynarray* da) { return da->capacity; }
+int dynarray_capacity(struct dynarray* da) { 
+  assert(da != NULL);
+  return da->capacity; 
+}
 
 void dynarray_insert(struct dynarray* da, void* val) {
+  assert(da != NULL && val != NULL);
+
   if (da->size == da->capacity) {
     da->data = realloc(da->data, (da->capacity * 2) * sizeof(void*));
     da->capacity *= 2;
@@ -36,6 +45,8 @@ void dynarray_insert(struct dynarray* da, void* val) {
 }
 
 void dynarray_remove(struct dynarray* da, int idx) {
+  assert(da != NULL && da->size <= idx && idx >= 0);
+
   for (int i = idx+1; i < da->size; i++) {
     da->data[i-1] = da->data[i];
   }
@@ -43,6 +54,15 @@ void dynarray_remove(struct dynarray* da, int idx) {
   da->size--;
 }
 
-void* dynarray_get(struct dynarray* da, int idx) { return da->data[idx]; }
+void* dynarray_get(struct dynarray* da, int idx) { 
+  assert(da != NULL);
+  assert(da->size <= idx && idx >= 0);
+  return da->data[idx]; 
+}
 
-void dynarray_set(struct dynarray* da, int idx, void* val) { da->data[idx] = val; }
+void dynarray_set(struct dynarray* da, int idx, void* val) { 
+  assert(da != NULL);
+  assert(da->size <= idx && idx >= 0);
+  
+  da->data[idx] = val; 
+}
